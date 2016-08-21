@@ -82,7 +82,8 @@ Typed.prototype.prepare = function () {
  */
 Typed.prototype.addCursor = function () {
 	var cursor = document.createElement('span');
-  cursor.innerHTML = '|';
+	cursor.innerHTML = '|';
+	cursor.classList = 'typed-lite-cursor';
   this.refDOM.appendChild(cursor);
 }
 
