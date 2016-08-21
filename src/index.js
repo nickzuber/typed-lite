@@ -32,6 +32,8 @@ function removeCharacter (str) {
  *   @param {boolean}        loop       If the process restarts when finished.
  *   @param {number}         startDelay Time before typing animation first begins.
  *   @param {number}         backTiming Timing for the backspace. Default to `timing`.
+ *   @param {number}         typoProbability Odds of a typo appeaering and fixing itself, 0-1
+ *   @param {number}         maxTypos   The maximum amount of typos to appear per word.
  * @return {void}
  */
 function Typed (reference, settings) {
@@ -48,6 +50,8 @@ function Typed (reference, settings) {
 	this.loop = settings.loop || false;
 	this.startDelay = settings.startDelay || 0;
 	this.backTiming = settings.backTiming || this.timing;
+	this.typoProbability = settings.typoProbability || 0;
+	this.maxTypos = settings.maxTypos || 0;
 }
 
 /**
@@ -60,9 +64,14 @@ Typed.prototype.start = function () {
 	this.currentWord = 0;
 	this.prepare();
 	this.addCursor();
-	setTimeout(function () {
+	if (this.startDelay > 0) {
+		this.typingSection.innerHTML = this.words[this.currentWord]; 
+		setTimeout(function () {
+			this.delete();
+		}.bind(this), this.startDelay);
+	} else {
 		this.type(this.words[this.currentWord]);
-	}.bind(this), this.startPause);
+	}
 }
 
 /**
@@ -100,21 +109,38 @@ Typed.prototype.type = function (word) {
 	if (typeof word !== 'string') {
   	throw new TypeError('Error: Attempting to type out a non-string element: ' + word);
 	}
+	var typoCount = 0;
   var wordArray = word.split('');
 	var partialString = '';
   var typing = function () {
   	var t = setTimeout(function () {
   		this.typingSection.innerHTML = partialString = advanceCharacter(partialString, wordArray.shift());
-    	if (wordArray.length > 0) {
-    		typing();
-    	} else {
+			if (wordArray.length > 0) {
+				if (typoCount < this.maxTypos && this.typoProbability > Math.random()) {
+					typoCount++;
+					writeTypoAndFix();
+				}else {
+					typing();
+				}
+			} else {
 				setTimeout(function () {
 					clearTimeout(t);
         	this.delete();
         }.bind(this), this.pause);
       }
   	}.bind(this), this.timing);
-  }.bind(this);
+	}.bind(this);
+	var writeTypoAndFix = function () {
+		var tp = setTimeout(function () {
+			var randomCharacter = String.fromCharCode(97 + parseInt(Math.random() * (122 - 97), 10));
+			this.typingSection.innerHTML = partialString = advanceCharacter(partialString, randomCharacter);
+			setTimeout(function () {
+				clearTimeout(tp);
+				this.typingSection.innerHTML = partialString = removeCharacter(this.typingSection.innerHTML);
+				typing();
+			}.bind(this), this.timing * 3);
+		}.bind(this), this.timing);
+	}.bind(this);
   typing();
 }
 

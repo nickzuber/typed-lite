@@ -14,10 +14,13 @@
 
 		var t = new Typed(nodeDOM, {
 			words: list,
-			timing: 75,
-			backTiming: 50,
-			pause: 2500,
-			loop: true 
+			startDelay: 1000,
+			timing: 65,
+			backTiming: 40,
+			pause: 2250,
+			loop: true,
+			typoProbability: .1,
+			maxTypos: 1
 		});
 
 		t.start();
