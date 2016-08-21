@@ -30,7 +30,8 @@ function removeCharacter (str) {
  *   @param {number}         timing     Time between each character is typed.
  *	 @param {number}         pause      Stalling time for when word finishes typing.
  *   @param {boolean}        loop       If the process restarts when finished.
- *   @param {number}         startPause Time before typing animation first begins.
+ *   @param {number}         startDelay Time before typing animation first begins.
+ *   @param {number}         backTiming Timing for the backspace. Default to `timing`.
  * @return {void}
  */
 function Typed (reference, settings) {
@@ -45,7 +46,8 @@ function Typed (reference, settings) {
   this.timing = settings.timing || 50;
 	this.pause = settings.pause || 500;
 	this.loop = settings.loop || false;
-	this.startPause = settings.startPause || 0;
+	this.startDelay = settings.startDelay || 0;
+	this.backTiming = settings.backTiming || this.timing;
 }
 
 /**
@@ -131,8 +133,8 @@ Typed.prototype.delete = function () {
 			} else {
 				clearTimeout(t);
       	this.finish();
-      }
-  	}.bind(this), this.timing);
+      } 
+  	}.bind(this), this.backTiming);
   }.bind(this);
   deleting();
 }
