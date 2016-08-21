@@ -21,7 +21,6 @@ function removeCharacter (str) {
 }
 
 /** 
- * @TODO input should be an object of setttings.
  * 
  * The constructor for a Typed object.
  *
