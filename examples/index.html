@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>Typed Lite | Example</title>
+		<script type="text/javascript" src="../build/typed-lite.min.js"></script>
+	</head>
+	<body>
+
+		<div id="test"></div>
+
+	<script>
+
+		var ref = document.querySelector('#test');
+		var words = ['hello', 'world']
+
+		var t = new Typed(ref, words);
+		console.log(t)
+		t.start();
+
+	</script>
+
+	</body>
+</html>
