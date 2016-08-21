@@ -97,12 +97,13 @@ Typed.prototype.type = function (word) {
   var wordArray = word.split('');
 	var partialString = '';
   var typing = function () {
-  	setTimeout(function () {
+  	var t = setTimeout(function () {
   		this.typingSection.innerHTML = partialString = advanceCharacter(partialString, wordArray.shift());
     	if (wordArray.length > 0) {
     		typing();
     	} else {
-      	setTimeout(function () {
+				setTimeout(function () {
+					clearTimeout(t);
         	this.delete();
         }.bind(this), this.pause);
       }
@@ -119,11 +120,12 @@ Typed.prototype.type = function (word) {
  */
 Typed.prototype.delete = function () {
   var deleting = function () {
-  	setTimeout(function () {
+  	var t = setTimeout(function () {
   		this.typingSection.innerHTML = removeCharacter(this.typingSection.innerHTML);
     	if (this.typingSection.innerHTML.length > 0) {
     		deleting();
-    	} else {
+			} else {
+				clearTimeout(t);
       	this.finish();
       }
   	}.bind(this), this.timing);
@@ -144,7 +146,9 @@ Typed.prototype.finish = function () {
 		this.loop ? this.type(this.words[this.currentWord]) : 0;
 	}
 	this.typingSection.innerHTML = '';
-	this.type(this.words[this.currentWord]);
+	setTimeout(function () {
+		this.type(this.words[this.currentWord]);
+	}.bind(this), 10);
 }
 
 exports = module.exports = Typed;
