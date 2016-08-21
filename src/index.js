@@ -53,12 +53,9 @@ function Typed (reference, settings) {
  * @return {void}
  */
 Typed.prototype.start = function () {
-	console.log('preping')
 	this.currentWord = 0;
 	this.prepare();
-	console.log('adding cursor...')
 	this.addCursor();
-	console.log('typing first word...')
 	this.type(this.words[this.currentWord]);
 }
 
