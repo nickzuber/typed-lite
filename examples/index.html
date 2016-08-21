@@ -10,10 +10,14 @@
 	<script>
 
 		var ref = document.querySelector('#test');
-		var words = ['hello', 'world']
+		var words = ['hello', 'world', 'and', 'universe'];
 
-		var t = new Typed(ref, words);
-		console.log(t)
+		var t = new Typed(ref, {
+			words: words,
+			timing: 60,
+			pause: 1500
+		});
+		console.log(t);
 		t.start();
 
 	</script>

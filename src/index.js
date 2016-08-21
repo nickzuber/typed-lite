@@ -1,59 +1,73 @@
 
 /**
+ * Appends a character to the given string.
  * 
- * 
- * 
- * 
+ * @param  {string} str  The string to be appended onto.
+ * @param  {string} char The character to append.
+ * @return {string}      The string with the character appended.
  */
 function advanceCharacter (str, char) {
 	return str.concat(char);
 }
 
 /**
+ * Removes the last character of the given string.
  * 
- * 
- * 
- * 
+ * @param  {string} str  The string to trim.
+ * @return {string}      The string with the last character removed.
  */
 function removeCharacter (str) {
 	return str.slice(0, -1);
 }
 
-/**
- * @param {Array.<string>} words  Array of words to type.
- * @param {number}			   timing Time between each character is typed.
- * @param {number} 				 pause  Stalling time for when word finishes typing.
+/** 
+ * @TODO input should be an object of setttings.
+ * 
+ * The constructor for a Typed object.
+ *
+ * @param {DOMElement}       reference  Reference to the DOM node for where to type.
+ * @param {object}           settings   Object defining the following settings:
+ *   @param {Array.<string>} words      Array of words to type.
+ *   @param {number}         timing     Time between each character is typed.
+ *	 @param {number}         pause      Stalling time for when word finishes typing.
+ *   @param {boolean}        loop       If the process restarts when finished.
+ * @return {void}
  */
-function Typed (refDOM, words, timing, pause) {
-	if (typeof refDOM !== 'object') {
+function Typed (reference, settings) {
+	if (typeof settings !== 'object') {
+		throw new TypeError('Error: settings parameter must be an object of settings.');
+	}
+	if (typeof reference !== 'object') {
   	console.warn('Warning: DOM reference might not be a valid DOM element.');
   }
-	this.refDOM = refDOM;
-	this.words = words || [];
-  this.timing = timing || 50;
-  this.pause = pause || 500;
+	this.refDOM = reference;
+	this.words = settings.words || [];
+  this.timing = settings.timing || 50;
+	this.pause = settings.pause || 500;
+	this.loop = settings.loop || false;
 }
 
 /**
+ * Begins the process of typing out each of the input words.
  * 
- * 
- * 
- * 
+ * @param {void}
+ * @return {void}
  */
 Typed.prototype.start = function () {
 	console.log('preping')
+	this.currentWord = 0;
 	this.prepare();
 	console.log('adding cursor...')
 	this.addCursor();
 	console.log('typing first word...')
-	this.type(this.words[0]);
+	this.type(this.words[this.currentWord]);
 }
 
 /**
+ * Creates DOM element to write/delete words into.
  * 
- * 
- * 
- * 
+ * @param {void}
+ * @return {void}
  */
 Typed.prototype.prepare = function () {
 	this.refDOM.innerHTML = '';
@@ -62,10 +76,10 @@ Typed.prototype.prepare = function () {
 }
 
 /**
+ * Creates and adds the cursor element to the DOM
  * 
- * 
- * 
- * 
+ * @param {void}
+ * @return {void}
  */
 Typed.prototype.addCursor = function () {
 	var cursor = document.createElement('span');
@@ -74,10 +88,10 @@ Typed.prototype.addCursor = function () {
 }
 
 /**
+ * Types out a single word.
  * 
- * 
- * 
- * 
+ * @param {string} word The word to type out.
+ * @return {void}
  */
 Typed.prototype.type = function (word) {
 	if (typeof word !== 'string') {
@@ -101,10 +115,10 @@ Typed.prototype.type = function (word) {
 }
 
 /**
+ * Deletes the current word within the typed DOM element.
  * 
- * 
- * 
- * 
+ * @param {void}
+ * @return {void}
  */
 Typed.prototype.delete = function () {
   var deleting = function () {
@@ -121,15 +135,20 @@ Typed.prototype.delete = function () {
 }
 
 /**
+ * Advances onto the next word if there is one. If no words left to type, either starts
+ * back from the begining in a loop or terminates.
  * 
- * 
- * 
- * 
+ * @param {void}
+ * @return {void}
  */
 Typed.prototype.finish = function () {
-	console.log('done!')
+	if (++this.currentWord >= this.words.length) {
+		this.currentWord = 0;
+		this.loop ? this.type(this.words[this.currentWord]) : 0;
+	}
+	this.typingSection.innerHTML = '';
+	this.type(this.words[this.currentWord]);
 }
-
 
 exports = module.exports = Typed;
 
@@ -137,3 +156,4 @@ exports = module.exports = Typed;
 if(typeof window !== 'undefined'){
 	 window.Typed = Typed;
 }
+
