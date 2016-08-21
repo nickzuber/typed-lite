@@ -93,7 +93,7 @@ Typed.prototype.addCursor = function () {
 Typed.prototype.type = function (word) {
 	if (typeof word !== 'string') {
   	throw new TypeError('Error: Attempting to type out a non-string element: ' + word);
-  }
+	}
   var wordArray = word.split('');
 	var partialString = '';
   var typing = function () {
@@ -119,7 +119,7 @@ Typed.prototype.type = function (word) {
  * @return {void}
  */
 Typed.prototype.delete = function () {
-  var deleting = function () {
+	var deleting = function () {
   	var t = setTimeout(function () {
   		this.typingSection.innerHTML = removeCharacter(this.typingSection.innerHTML);
     	if (this.typingSection.innerHTML.length > 0) {
@@ -144,11 +144,12 @@ Typed.prototype.finish = function () {
 	if (++this.currentWord >= this.words.length) {
 		this.currentWord = 0;
 		this.loop ? this.type(this.words[this.currentWord]) : 0;
+	} else {
+		this.typingSection.innerHTML = '';
+		setTimeout(function () {
+			this.type(this.words[this.currentWord]);
+		}.bind(this), 10);
 	}
-	this.typingSection.innerHTML = '';
-	setTimeout(function () {
-		this.type(this.words[this.currentWord]);
-	}.bind(this), 10);
 }
 
 exports = module.exports = Typed;

@@ -9,15 +9,16 @@
 
 	<script>
 
-		var ref = document.querySelector('#test');
-		var words = ['first', 'hello long string named world'];
+		var nodeDOM = document.querySelector('#test');
+		var list = ['JavaScript', 'Data Structures', 'React', 'Redux', 'NodeJS'];
 
-		var t = new Typed(ref, {
-			words: words,
-			timing: 20,
-			pause: 1500
+		var t = new Typed(nodeDOM, {
+			words: list,
+			timing: 60,
+			pause: 1250,
+			loop: true 
 		});
-		console.log(t);
+
 		t.start();
 
 	</script>
