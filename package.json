@@ -1,6 +1,6 @@
 {
   "name": "typed-lite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight module for typing animations in native javascript.",
   "main": "./src/index.js",
   "scripts": {
