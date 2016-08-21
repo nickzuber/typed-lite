@@ -30,6 +30,7 @@ function removeCharacter (str) {
  *   @param {number}         timing     Time between each character is typed.
  *	 @param {number}         pause      Stalling time for when word finishes typing.
  *   @param {boolean}        loop       If the process restarts when finished.
+ *   @param {number}         startPause Time before typing animation first begins.
  * @return {void}
  */
 function Typed (reference, settings) {
@@ -44,6 +45,7 @@ function Typed (reference, settings) {
   this.timing = settings.timing || 50;
 	this.pause = settings.pause || 500;
 	this.loop = settings.loop || false;
+	this.startPause = settings.startPause || 0;
 }
 
 /**
@@ -56,7 +58,9 @@ Typed.prototype.start = function () {
 	this.currentWord = 0;
 	this.prepare();
 	this.addCursor();
-	this.type(this.words[this.currentWord]);
+	setTimeout(function () {
+		this.type(this.words[this.currentWord]);
+	}.bind(this), this.startPause);
 }
 
 /**
