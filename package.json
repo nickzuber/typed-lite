@@ -1,0 +1,24 @@
+{
+  "name": "typed-lite",
+  "version": "1.0.0",
+  "description": "A lightweight module for typing animations in native javascript.",
+  "main": "./index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/gulp build"
+  },
+  "keywords": [
+    "typed",
+    "typing",
+    "animation",
+    "js"
+  ],
+  "author": "Nick Zuber <zuber.nicholas@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-header": "^1.8.8",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
+  }
+}
