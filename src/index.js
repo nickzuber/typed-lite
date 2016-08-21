@@ -138,7 +138,7 @@ Typed.prototype.type = function (word) {
 				clearTimeout(tp);
 				this.typingSection.innerHTML = partialString = removeCharacter(this.typingSection.innerHTML);
 				typing();
-			}.bind(this), this.timing * 3);
+			}.bind(this), this.timing * 2);
 		}.bind(this), this.timing);
 	}.bind(this);
   typing();
